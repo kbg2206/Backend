@@ -1,5 +1,5 @@
 import mongoose,{Schema} from "mongoose";
-import {DB_NAME} from "./constants.js";
+//  import {DB_NAME} from "./constants.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
