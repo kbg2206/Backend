@@ -9,3 +9,6 @@ class ApiResponse{
         this.success=statusCode < 400 // All server has some statuscode based on different responses you can check online about it 
     }
 }
+
+
+export default ApiResponse
