@@ -1,7 +1,7 @@
 import asyncHandler from "../utils/asyncHandler.js";
 import {ApiError} from "../utils/apiError.js";
 import {User} from "../models/user.models.js";
-import {uploadOnCloudnary} from "../utils/cloudnary.js"
+import {uploadOnCloudnary} from "../utils/cloudnary.js";
 import {ApiResponse} from "../utils/apiResponse.js"
 const registerUser = asyncHandler (async (req,res)=>{
     //get user details from frontend
@@ -17,7 +17,7 @@ const registerUser = asyncHandler (async (req,res)=>{
     //step 1
     // if data come from any form or as a json
     const {fullname,email,username,password} = req.body
-    console.log("Email: ",email);
+    //console.log("Email: ",email);
 
 
     //step 2
@@ -29,12 +29,12 @@ const registerUser = asyncHandler (async (req,res)=>{
 field?.trim()==""
     }))
     {
-        throw new ApiError(400,"All field are required")
+        throw  new ApiError(400,"All field are required")
     }
 
 
     //step 3
-    const existedUser = User.findOne({
+    const existedUser = await User.findOne({
         $or:[{username},{email}]
     })
 
@@ -43,8 +43,15 @@ field?.trim()==""
     }
 
     // step 4
+    //console.log(req.files)
     const avatarLocalPath = req.files?.avatar[0]?.path;
-    const coverImageLocalPath = req.files?.coverImage[0]?.path;
+    //const coverImageLocalPath = req.files?.coverImage[0]?.path;
+
+    let coverImageLocalPath;
+    if(req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0)
+    {
+        coverImageLocalPath = req.files.coverImage[0].path;
+    }
 
     if(!avatarLocalPath)
     {
@@ -71,7 +78,7 @@ field?.trim()==""
     })
     // step 7 also
     const createdUser = await User.findById(user._id).select(
-        "-password -refreshToken"
+        "-password -refreshtoken"
     ) //user create
 
     if(!createdUser)

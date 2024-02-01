@@ -30,10 +30,10 @@ const userSchema = new Schema({
         type:String,
         required:true
     },
-    coverimage:{
+    coverImage:{
         type:String
     },
-    watchHistory:[{
+    watchhistory:[{
         type:Schema.Types.ObjectId,
         ref:"Video"
     }],
@@ -41,7 +41,7 @@ const userSchema = new Schema({
         type:String,
         required:[true,'Password is required ']
     },
-    refreshToken:{
+    refreshtoken:{
         type:String
     }
 },{
@@ -49,7 +49,7 @@ const userSchema = new Schema({
 });
 
 
-userSchema.pre("save",async function(nexy){
+userSchema.pre("save",async function(next){
     if(this.isModified("password"))
     {
         this.password=await bcrypt.hash(this.password,10);
@@ -86,4 +86,4 @@ userSchema.method.generateRefreshToken = function(){
         }
     )
 };
-export const user=mongoose.model("User",userSchema);
+export const User=mongoose.model("User",userSchema);
